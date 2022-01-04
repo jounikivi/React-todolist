@@ -8,13 +8,24 @@ import SearchItem from './SearchItem';
 
 function App() {
   const API_URL = 'http://localhost:3500/items'
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem('Lista')) || []);
-  const [newItem, setNewItem] = useState('')
-  const [search, setSearch] = useState('')
+  const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState('');
+  const [search, setSearch] = useState('');
+  const [fetErrors, setFetErrors] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem('Lista', JSON.stringify(items));
-  }, [items])
+    const fetchItemes = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const listItems = await response.json();
+        console.log(listItems);
+        setItems(listItems);
+      }catch (err) {
+        console.log(err.stack)
+      }
+    }
+    (async () => await fetchItemes())();
+  }, [])
 
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
