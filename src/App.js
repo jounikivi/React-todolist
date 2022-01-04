@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import SearchItem from './SearchItem';
 
 function App() {
+  const API_URL = 'http://localhost:3500/items'
   const [items, setItems] = useState(JSON.parse(localStorage.getItem('Lista')) || []);
   const [newItem, setNewItem] = useState('')
   const [search, setSearch] = useState('')
@@ -41,7 +42,7 @@ function App() {
 
   return (
       <div className="App">
-        <Header title = 'Testi Sivu' />
+        <Header title = 'Lista' />
         <AddItem 
           newItem={newItem} 
           setNewItem={setNewItem} 
