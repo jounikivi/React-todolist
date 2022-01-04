@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import SearchItem from './SearchItem';
 
 function App() {
-  const API_URL = 'http://localhost:3500/itemss'
+  const API_URL = 'http://localhost:3500/items'
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
   const [search, setSearch] = useState('');
@@ -26,7 +26,10 @@ function App() {
   
       }
     }
-    (async () => await fetchItemes())();
+    setTimeout(() => {
+      (async () => await fetchItemes())();
+    }, 2000)
+    
   }, [])
 
   const addItem = (item) => {
@@ -68,10 +71,11 @@ function App() {
         />
 
         <main>
-          <Content 
+          {fetchError && <p style={{ color: 'red'}}>{`Error: ${fetchError}`}</p>}
+          {!fetchError && <Content 
             items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
             handleCheck={handleCheck} 
-            handleDelete={handleDelete} />
+            handleDelete={handleDelete} />}
         </main>
         <Footer length= {items.length} />
       </div>
