@@ -7,21 +7,23 @@ import { useEffect, useState } from 'react';
 import SearchItem from './SearchItem';
 
 function App() {
-  const API_URL = 'http://localhost:3500/items'
+  const API_URL = 'http://localhost:3500/itemss'
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
   const [search, setSearch] = useState('');
-  const [fetErrors, setFetErrors] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
     const fetchItemes = async () => {
       try {
         const response = await fetch(API_URL);
+        if (!response.ok) throw Error('Did not receive expected data')
         const listItems = await response.json();
         console.log(listItems);
         setItems(listItems);
       }catch (err) {
-        console.log(err.stack)
+        setFetchError(err.message);
+  
       }
     }
     (async () => await fetchItemes())();
@@ -65,11 +67,12 @@ function App() {
           setSearch={setSearch}
         />
 
-        
-        <Content 
-          items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
-          handleCheck={handleCheck} 
-          handleDelete={handleDelete} />
+        <main>
+          <Content 
+            items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
+            handleCheck={handleCheck} 
+            handleDelete={handleDelete} />
+        </main>
         <Footer length= {items.length} />
       </div>
     );
